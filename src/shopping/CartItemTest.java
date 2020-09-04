@@ -40,8 +40,16 @@ public class CartItemTest {
 	public void testCartItemStockItemInt() {
 		assertEquals(item1, cartItem1.item);
 		assertEquals(item2, cartItem2_1.item);
+		
 		assertEquals(0, cartItem1.discountPercentage);
+		assertEquals(5, cartItem1.quantity);
+		
 		assertEquals(0, cartItem2_1.discountPercentage);
+		assertEquals(4, cartItem2_1.quantity);
+		
+		cartItem1 = new CartItem(item1, -5);
+		assertEquals(0, cartItem1.quantity);
+		
 		currentMethodName = new Throwable().getStackTrace()[0].getMethodName();
 	}
 
@@ -49,12 +57,20 @@ public class CartItemTest {
 	public void testCartItemStockItemIntInt() {
 		assertEquals(item2, cartItem2_2.item);
 		assertEquals(20, cartItem2_2.discountPercentage);
+		assertEquals(5, cartItem2_2.quantity);
 
-		cartItem2_2 = new CartItem(item2, 5, -4);
+		cartItem2_2 = new CartItem(item2, 7, -4);
 		assertEquals(0, cartItem2_2.discountPercentage);
+		assertEquals(7, cartItem2_2.quantity);
 
-		cartItem2_2 = new CartItem(item2, 5, 103);
+		cartItem2_2 = new CartItem(item2, 1, 103);
 		assertEquals(100, cartItem2_2.discountPercentage);
+		assertEquals(1, cartItem2_2.quantity);
+
+		cartItem2_2 = new CartItem(item2, -5, 103);
+		assertEquals(100, cartItem2_2.discountPercentage);
+		assertEquals(0, cartItem2_2.quantity);
+		
 		currentMethodName = new Throwable().getStackTrace()[0].getMethodName();
 	}
 

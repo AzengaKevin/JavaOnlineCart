@@ -37,9 +37,13 @@ public class StockItemTest {
 
 	@Test @Graded(description="StockItem:updateRegularPrice(int)", marks=5)
 	public void testUpdateRegularPrice() {
+		
 		StockItem item = new StockItem("SamBa", 129.9);
 		item.updateRegularPrice(10); //10% increase
 		assertEquals(142.89, item.unitPrice, 0.001);
+		
+		item.updateRegularPrice(-20); //20% decrease from the new price 142.89
+		assertEquals(114.312, item.unitPrice, 0.001);
 		
 		currentMethodName = new Throwable().getStackTrace()[0].getMethodName();
 	}

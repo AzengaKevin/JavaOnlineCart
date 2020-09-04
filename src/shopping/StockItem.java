@@ -101,30 +101,8 @@ public class StockItem {
 		else if (this.unitPrice < other.unitPrice)
 			return LESSER;
 
-		// Check the strings now
-		int thisNameLength = this.name.length();
-		int otherNameLength = other.name.length();
+		int result = this.name.compareTo(other.name);
 
-		// What will be the maximum loop count
-		int maxLoopLength = thisNameLength < otherNameLength ? thisNameLength : otherNameLength;
-
-		for (int i = 0; i < maxLoopLength; i++) {
-
-			if (this.name.charAt(i) > other.name.charAt(i))
-				return GREATER;
-			if (this.name.charAt(i) < other.name.charAt(i))
-				return LESSER;
-
-		}
-
-		//If the first characters until the minimum length are equal
-		
-		if (thisNameLength > otherNameLength)
-			return GREATER;
-
-		if (thisNameLength < otherNameLength)
-			return LESSER;
-
-		return EQUAL;
+		return result < 0 ? LESSER : result > 0 ? GREATER : EQUAL;
 	}
 }
