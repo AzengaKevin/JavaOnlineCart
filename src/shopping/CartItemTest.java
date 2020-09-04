@@ -121,8 +121,15 @@ public class CartItemTest {
 		assertEquals("SOCCER BALL (SIZE 5) (5 @ $39.9)", cartItem1.toString());
 		assertEquals("SPORTS BIBS (4 @ $5.9)", cartItem2_1.toString());
 		assertEquals("SPORTS BIBS (5 @ *$4.72)", cartItem2_2.toString());
-		assertEquals("JERSEY (1 @ $29)", cartItem3.toString());
 		//note that a value like 4.720000000000001 should be changed to 4.72
+		
+		CartItem item = new CartItem(new StockItem("Dummy", 4.719999), 5);
+		assertEquals("DUMMY (5 @ $4.71)", item.toString());
+		
+		CartItem item2 = new CartItem(new StockItem("Kit", 12.5), 5, 20);
+		assertEquals("KIT (5 @ *$10)", item2.toString());
+		
+		assertEquals("JERSEY (1 @ $29)", cartItem3.toString());
 		
 		CartItem testItem = new CartItem(new StockItem("Test", 5.138), 1);
 		assertEquals("TEST (1 @ $5.13)", testItem.toString());
@@ -135,6 +142,7 @@ public class CartItemTest {
 		
 		testItem = new CartItem(new StockItem("Test", 5), 1);
 		assertEquals("TEST (1 @ $5)", testItem.toString());
+		
 		currentMethodName = new Throwable().getStackTrace()[0].getMethodName();
 	}
 

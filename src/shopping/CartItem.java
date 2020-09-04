@@ -108,17 +108,80 @@ public class CartItem {
 	}
 
 	/**
-	 * return String version of the item for example, if item represents name =
-	 * "BIBS", unitPrice = 5.9, quantity = 6, discountPercentage = 0, return "BIBS
-	 * (6 @ $5.9)" if item represents name = "BIBS", unitPrice = 5.9, quantity = 6,
-	 * discountPercentage = 10, return "BIBS (6 @ *$5.31)"
+	 * return String version of the item NOTE: an asterisk (*) should be added in
+	 * front of discounted unit prices
+	 * 
+	 * If the final price is of the form: - 5.18 or 5.181 or 5.189 or 5.1899999:
+	 * display 5.18 - 5.1: display 5.1 - 5 (or 5.0): display 5
+	 * 
+	 * for example, if item represents name = "BIBS", unitPrice = 5.9, quantity = 6,
+	 * discountPercentage = 0, return "BIBS (6 @ $5.9)" if item represents name =
+	 * "BIBS", unitPrice = 5.9, quantity = 6, discountPercentage = 10, return "BIBS
+	 * (6 @ *$5.31)"
 	 */
 	public String toString() {
 
-		if (this.discountPercentage == 0) {
-			return this.item.name + " (" + this.quantity + " @ $" + this.item.unitPrice + ")";
+		String priceStr = "" + this.getDiscountedUnitPrice();
+
+		String newPriceStr = "";
+		String precisionStr = "";
+		String price = "";
+
+		int precisionCount = 0;
+		boolean hasPrecision = false;
+
+		for (int i = 0; i < priceStr.length(); i++) {
+
+			int ascii = (int) priceStr.charAt(i);
+
+			if (ascii == 46) {
+
+				hasPrecision = true;
+
+			} else if (ascii >= 48 && ascii <= 57) {
+
+				if (hasPrecision) {
+					if (precisionCount >= 2)
+						break;
+					precisionStr += priceStr.charAt(i);
+					precisionCount++;
+
+				} else {
+					newPriceStr += priceStr.charAt(i);
+				}
+			}
 		}
 
-		return this.item.name + " (" + this.quantity + " @ *$" + this.getDiscountedUnitPrice() + ")";
+		if (!hasPrecision) {
+			
+			price = newPriceStr;
+			
+		} else {
+
+			if (precisionStr.length() == 1) {
+				if (precisionStr.charAt(0) == '0') {
+					price = newPriceStr;
+				} else {
+					price = newPriceStr + '.' + precisionStr;
+				}
+			} else {
+				if (precisionStr.charAt(0) == '0' && precisionStr.charAt(1) == '0') {
+					price = newPriceStr;
+				} else if (precisionStr.charAt(1) == '0') {
+					price = newPriceStr + '.' + precisionStr.charAt(0);
+				} else {
+					price = newPriceStr + '.' + precisionStr;
+				}
+			}
+
+		}
+		
+		if(discountPercentage == 0) {
+			//BIBS (6 @ $5.9)
+			return this.item.name +" (" + this.quantity + " @ $" + price + ")";
+		}
+		
+		//BIBS (6 @ *$5.31)
+		return this.item.name +" (" + this.quantity + " @ *$" + price + ")";
 	}
 }
